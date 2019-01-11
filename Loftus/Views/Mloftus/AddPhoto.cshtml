@@ -1,0 +1,128 @@
+﻿<style>
+
+
+	.wash:-webkit-autofill {
+		background-color: aqua !important;
+	}
+
+	.input-field > label, .fontLabel {
+		color: black !important;
+	}
+
+	.selectWidth {
+		width: 100% !important;
+	}
+</style>
+
+<div id="addphotodiv" class="container body-content">
+	<div class="col-6 mx-auto">
+		<div class="card my-5">
+			<div class="card-header transparent">
+				Add New Content
+			</div>
+			<div class="card-block">
+				<div class="row">
+					<div class="col-12 my-5">
+						@using (Html.BeginForm("Process", "MLoftus", FormMethod.Post, new { id = "photoSubmit", enctype = "multipart/form-data" }))
+						{
+
+							<div class="box">
+								<input type="file" name="photo" id="file-1" class="inputfile inputfile-1" />
+								<label class="w-100" for="file-1">
+									<span>Choose a file&hellip;</span>
+								</label>
+							</div>
+
+							<div class="input-field">
+								<input id="title" type="text" name="title" class="validate" autocomplete="new-password">
+								<label for="title">Title</label>
+							</div>
+
+							<div class="input-field">
+								<input id="dems" type="text" name="dems" class="validate wash" autocomplete="new-password">
+								<label for="dems">Dimensions</label>
+							</div>
+
+							<div class="input-field">
+								<input id="year" type="text" name="year" class="validate" autocomplete="new-password">
+								<label for="year">Year</label>
+							</div>
+
+							<div class="form-group selectWidth">
+								<label class="fontLabel selectWidth" for="category">
+									Category/Medium
+									<select class="select2 form-control" name="medium" id="medium">
+										<optgroup label="Artwork">
+											<option data-vgroup="artwork" value="oil">Oil</option>
+											<option data-vgroup="artwork" value="acrylics">Acrylics</option>
+											<option data-vgroup="artwork" value="illustrations">Illustrations</option>
+											<option data-vgroup="artwork" value="commissions">Commissions</option>
+										</optgroup>
+										<optgroup label="Beauty">
+											<option data-vgroup="beauty" value="beauty">Beauty</option>
+											<option data-vgroup="beauty" value="corrective">Corrective</option>
+											<option data-vgroup="beauty" value="events">Events</option>
+											<option data-vgroup="beauty" value="themed">Themed</option>
+											<option data-vgroup="beauty" value="trendy">Trendy</option>
+										</optgroup>
+
+									</select>
+								</label>
+							</div>
+							<input type="hidden" id="category" name="category" value="artwork">
+							<div class="input-field">
+								<textarea name="addInfo" id="addInfo" aria-describedby="helpId" class="materialize-textarea"></textarea>
+								<label for="textarea1">Additional Info</label>
+							</div>
+
+							<button class="btn btn-block" id="addPhoto" type="button">Upload Image</button>
+
+						}
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+</div>
+<script src="~/MyContent/JS/CustomImageInput/jquery.custom-file-input.js"></script>
+
+<script>
+	function prepJSON(element) {
+		function TrimWhite(string) {
+			if (string == null) {
+				return string;
+			} else {
+				return string.replace(/^\s+|\s+$/gm, '')
+			}
+		}
+		var jsonArray = {};
+		_.each($(element).serializeArray(), function (form) {
+			var colName = {};
+			colName[form.name] = TrimWhite(form.value);
+			_.extend(jsonArray, colName)
+		})
+		return jsonArray;
+	}
+	$(function () {
+		$('.select2').select2({
+
+		})
+	})
+
+	$('#medium').on('change', function () {
+		$('#category').val($('#medium  option:selected').data('vgroup'))
+	})
+
+	$('#addPhoto').on('click', function () {
+		if ($('#title').val() == "" || $('#file-1').val() == "") {
+			alert('gfdsgfds')
+		}
+		else {
+			$('#photoSubmit').submit()
+		}
+	});
+
+</script>

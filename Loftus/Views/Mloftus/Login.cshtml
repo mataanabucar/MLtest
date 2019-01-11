@@ -1,0 +1,72 @@
+﻿
+
+<style>
+    .login.active {
+        --color: #ff6161 !important;
+        color: #c2c2c2 !important;
+    }
+
+    .login {
+        color: #ff6161 !important;
+    }
+
+    .loginInput:focus {
+        border-bottom-color: #ff6161 !important;
+        box-shadow: 0 1px 0 0 #ff6161 !important;
+        color: #f3f3f3 !important;
+    }
+
+    .loginInput {
+        color: #ff6161 !important;
+    }
+
+    .rowGroup1 {
+        background-color: #2d2d2d;
+        border: 1px solid #4a4a4a;
+        border-radius: 5px;
+	}
+	nav.nav-extended .nav-wrapper {
+		min-height: 50px;
+	}
+
+	nav, nav .nav-wrapper i, nav a.sidenav-trigger, nav a.sidenav-trigger i {
+		height: 50px !important;
+		line-height: 50px !important;
+	}
+
+	.navbar-fixed {
+		height: 50px !important;
+	}
+</style>
+
+<div class="row">
+
+    <div class="col-md-6 col-12 mx-auto p-5">
+        <form method="POST" action="Mla">
+            <div class="row rowGroup1">
+                <div class="col-12 mt-3">
+						<small id="emailHelp" class="form-text red-text text-lighten-2">@((string)TempData["invalid"])</small>
+                    <div class="form-group input-field">
+                        <input type="email" name="email" class="form-control loginInput" id="loginEmail" aria-describedby="emailHelp" autocomplete="new-password">
+                        <label class="login" for="loginEmail">Email Address</label>
+
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group input-field">
+                        <input type="password" name="password" class="form-control loginInput" id="loginPassword" autocomplete="new-password">
+                        <label class="login" for="loginPassword">Password</label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="input-field center">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+					
+                </div>
+				
+            </div>
+
+        </form>
+    </div>
+</div>

@@ -1,0 +1,122 @@
+﻿<head>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+<div id="headdiv" class="mx-auto" style="max-width:1600px;font-family:Raleway !important; font-weight:100;">
+
+    <div id="titleID" class="headline animated fadeIn">
+        <div class="titleRow d-md-flex justify-content-between">
+            <div id="clickme"><h1 id="test" class="lrg my-3 center thin">MLoftus Artworks</h1></div>
+
+			<div id="emailHeader" class="m-0 my-3 row" style="font-size: 14pt; align-self: center; font-weight: 300 !important;">
+				<div class="col-12 col-auto col-md-auto" style="align-self: center;">
+					meganloftus1@icloud.com
+				</div>
+
+				<div class="col-6 col-md-auto">
+					<a href="https://www.instagram.com/mtron_/" target="_blank"><i class="fab fa-instagram clickable" style="font-size: 33pt;"></i></a>
+				</div>
+				<div class="col-6 col-md-auto">
+					<a href="https://www.linkedin.com/in/mloftus1" target="_blank"><i class="fab fa-linkedin clickable" style="font-size: 33pt;"></i></a>
+				</div>
+			</div>		
+        </div>
+    </div>
+
+
+    <div id="artBeauty" class="mrow">
+        <div id="artID" class="d-flex flex-column animated fadeIn zoom1 catBtn" onclick="loadPics('artID');">
+            <div id="artID" class="artPicDiv z-depth-5">
+                <div id="artID" d1 class="center mx-auto">A Plethora of Artworks for You</div>
+            </div>
+            <p s1>Art Portfolio</p>
+        </div>
+
+        <div id="loadingBox" style="opacity:0;">
+            <h4 style="color:white;letter-spacing: 2px;font-weight: 100 !important;">loading...</h4>
+        </div>
+
+        <div id="beautyID" class="d-flex flex-column animated fadeIn zoom2 catBtn" onclick="loadPics('beautyID');">
+            <div id="beautyID" class="beautyPicDiv z-depth-5">
+                <div id="beautyID" d2 class="center mx-auto">Emphasis for Your personal Beauty</div>
+            </div>
+            <p s1>Beauty Portfolio</p>
+        </div>
+    </div>
+</div>
+
+
+<div id="contentdiv" style="max-width:1080px !important" class="mx-auto w-75">
+    <div id="ddDivArt" class="mx-auto mb-1 left-align artDD">
+        <a id="ddButton1" class='dropdown-trigger btn catButton' href='#' data-target='dropdown1' style="width:133px;">Art Category</a>
+        <ul id='dropdown1' class='dropdown-content '>
+            <li><a class="filterButtons" data-filter="*" href="#!">Show All</a></li>
+            <li><a class="filterButtons" data-filter=".oil" href="#!">Oil</a></li>
+            <li><a class="filterButtons" data-filter=".acrylics" href="#!">Acrylic</a></li>
+            <li><a class="filterButtons" data-filter=".Illustrations" href="#!">Illustrations</a></li>
+            <li><a class="filterButtons" data-filter=".commissions" href="#!">Commissions</a></li>
+        </ul>
+    </div>
+    <div id="ddDivBeauty" class="mx-auto mb-1 left-align makeupDD">
+        <a id="ddButton2" class='dropdown-trigger btn catButton' href='#' data-target='dropdown2' style="width:170px;">Beauty Category</a>
+        <ul id='dropdown2' class='dropdown-content '>
+            <li><a class="filterButtons" data-filter="*" href="#!">Show All</a></li>
+            <li><a class="filterButtons" data-filter=".beauty" href="#!">Beauty</a></li>
+            <li><a class="filterButtons" data-filter=".corrective" href="#!">Corrective</a></li>
+            <li><a class="filterButtons" data-filter=".events" href="#!">Events</a></li>
+            <li><a class="filterButtons" data-filter=".themed" href="#!">Themed</a></li>
+            <li><a class="filterButtons" data-filter=".trendy" href="#!">Trendy</a></li>
+        </ul>
+    </div>
+
+    <div id="btnDIV" class="mx-auto mb-1 right-align" style="display: none;">
+        <div id="artBtnGroup" class="btn-group btn-group-toggle mx-auto filter-button-group" data-toggle="buttons">
+            <label class="btn btn-secondary btn-small active">
+                <input class="filterButtons" data-filter="*" type="radio" name="options" id="all" autocomplete="off" checked> Show All
+            </label>
+            <label class="btn btn-secondary btn-small">
+                <input class="filterButtons" data-filter=".oil" type="radio" name="options" id="oCheck" autocomplete="off" checked> Oil
+            </label>
+            <label class="btn btn-secondary btn-small">
+                <input class="filterButtons" data-filter=".acrylics" type="radio" name="options" id="aCheck" autocomplete="off"> Acrylic
+            </label>
+            <label class="btn btn-secondary btn-small">
+                <input class="filterButtons" data-filter=".illustrations" type="radio" name="options" id="iCheck" autocomplete="off"> Illustrations
+            </label>
+            <label class="btn btn-secondary btn-small">
+                <input class="filterButtons" data-filter=".commissions" type="radio" name="options" id="cCheck" autocomplete="off"> Commissions
+            </label>
+        </div>
+        <div id="makeupBtnGroup" class="btn-group btn-group-toggle mx-auto filter-button-group" data-toggle="buttons">
+            <label class="btn btn-secondary btn-small active">
+                <input class="filterButtons" data-filter="*" type="radio" name="options" id="allmakeup" autocomplete="off" checked> Show All
+            </label>
+            <label class="btn btn-secondary btn-small">
+                <input class="filterButtons" data-filter=".beauty" type="radio" name="options" id="bbCheck" autocomplete="off" checked> Beauty
+            </label>
+            <label class="btn btn-secondary btn-small">
+                <input class="filterButtons" data-filter=".corrective" type="radio" name="options" id="bcCheck" autocomplete="off"> Corrective
+            </label>
+            <label class="btn btn-secondary btn-small">
+                <input class="filterButtons" data-filter=".events" type="radio" name="options" id="beCheck" autocomplete="off"> Events
+            </label>
+            <label class="btn btn-secondary btn-small">
+                <input class="filterButtons" data-filter=".themed" type="radio" name="options" id="bthCheck" autocomplete="off"> Themed
+            </label>
+            <label class="btn btn-secondary btn-small">
+                <input class="filterButtons" data-filter=".trendy" type="radio" name="options" id="btrCheck" autocomplete="off"> Trendy
+            </label>
+        </div>
+    </div>
+
+    <div id="ArtBox" class=" mx-auto bc" style="display: none;overflow: hidden;">
+        <div id="mainGrid" class="grid artGrid" style="opacity:0;">
+            <div class="grid-sizer"></div>
+        </div>
+        <div id="beautyGrid" class="grid beautyGrid">
+            <div class="grid-sizer"></div>
+        </div>
+
+    </div>
+</div>
+
+

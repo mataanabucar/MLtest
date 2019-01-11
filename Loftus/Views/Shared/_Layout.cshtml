@@ -1,0 +1,512 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>MLoftus ArtWorks</title>
+	@Styles.Render("~/Content/css")
+	@Scripts.Render("~/bundles/modernizr")
+	@Styles.Render("~/bundles/MyStyles")
+	@*@Styles.Render("~/Content/lightbox")*@ 
+	<link href="~/MyContent/test/LightBoxAll/css/lightbox.css" rel="stylesheet" />
+	@Scripts.Render("~/bundles/jquery")
+	<script src="~/MyContent/JS/bootbox.min.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900|Roboto:100,300,400,500,700,900" rel="stylesheet">
+
+	@Scripts.Render("~/bundles/MyScripts")
+	
+	@Scripts.Render("~/bundles/lightbox")
+	@Scripts.Render("~/bundles/bootstrap")
+
+	@{
+		if ((bool)Session["admin"])
+		{
+
+			<style>
+				nav.nav-extended .nav-wrapper {
+					min-height: 50px;
+				}
+
+				nav, nav .nav-wrapper i, nav a.sidenav-trigger, nav a.sidenav-trigger i {
+					height: 50px !important;
+					line-height: 50px !important;
+				}
+
+				.navbar-fixed {
+					height: 50px !important;
+				}
+			</style>
+		}
+		else
+		{
+
+
+		}
+
+	}
+	<style>
+		.lb-caption {
+			word-spacing: 8px !important;
+		}
+
+		.clickable {
+			cursor: pointer;
+		}
+
+		li .clickable {
+			padding: 0 15px;
+			display: block;
+			font-size: 1.5rem;
+		}
+
+		.clickable:hover {
+			text-shadow: 0px 0px 16px #ff25ff;
+			transition: 0.2s;
+			color: #ff8b8b;
+			--text-decoration: underline;
+			--font-weight: bold;
+		}
+
+		.copywrite {
+			position: fixed;
+			right: 16px;
+			bottom: 7px;
+		}
+	</style>
+</head>
+<body style="font-family:Raleway !important;">
+	<nav id="nav" class="transparent" style="border-bottom: 1px solid #4a4a4a;">
+		<div class="nav-wrapper">
+			@{
+				if ((bool)Session["admin"])
+				{
+					<a class="right mr-3 clickable" style="font-size:11pt;" href="/mloftus/logout">Logout</a>
+				}
+				else
+				{
+					<a class="right mr-3 clickable" style="font-size:11pt;" href="/mloftus/login">Login</a>
+				}
+
+			}
+
+
+			<a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="fa fa-bars" aria-hidden="true"></i></a>
+			<ul class="left hide-on-med-and-down">
+				<li><a class="clickable" href="/mloftus/welcome">Home</a></li>
+				<li><a href="#" id="artNav" class="clickable">Artwork</a></li>
+				<li><a href="#" id="beautyNav" class="clickable">Beauty</a></li>
+				<li><a href="#" class="clickable">About</a></li>
+				@{
+					if ((bool)Session["admin"])
+					{
+						<li><a href="/mloftus/EditDetails" id="aboutNav" class="clickable">Edit</a></li>
+						<li class="blue-text z-depth-3"><a href="/mloftus/AddPhoto" id="aboutNav" class="clickable"><b>Add New</b></a></li>
+					}
+				}
+			</ul>
+		</div>
+	</nav>
+	<ul class="sidenav" id="mobile-demo">
+		<li><a href="/mloftus/welcome">Home</a></li>
+		<li><a href="">Artwork</a></li>
+		<li><a href="">Beauty</a></li>
+		<li><a href="">About</a></li>
+	</ul>
+	@RenderBody()
+
+	<div class="copywrite float-right red-text text-lighten-2 text-white" style="display: flex;">
+		<div class="fa-2x">
+			&#xa9
+		</div>
+		<div style="align-self: center;" class="ml-2">
+			@DateTime.Now.Year MLoftus ArtWorks
+		</div>
+	</div>
+
+
+</body>
+
+
+</html>
+
+
+
+<script type="text/html" id="photos">
+	<% _.forEach(obj, function(pic) { %>
+	<div class="grid-item <%- _.toLower(pic.Medium) %> show" data-id="<%- pic.ID %>">
+		<a href="/Photos/<%- pic.Filename %>" data-lightbox="*"
+		   data-title="<span class='pTitle'><%- pic.Title %></span> <%- pic.Year %> <%- _.capitalize(pic.Medium) %> <span class='dems'><%- pic.Deminsions %></span> ">
+			<img src="/Photos/Thumbs/<%- pic.Filename %>">
+		</a>
+	</div>
+	<% }); %>
+</script>
+
+<script>
+
+	function prepJSON(element) {
+		function TrimWhite(string) {
+			if (string == null) {
+				return string;
+			} else {
+				return string.replace(/^\s+|\s+$/gm, '')
+			}
+		}
+		var jsonArray = {};
+		_.each($(element).serializeArray(), function (form) {
+			var colName = {};
+			colName[form.name] = TrimWhite(form.value);
+			_.extend(jsonArray, colName)
+		})
+		return jsonArray;
+	}
+
+$(function () {
+	$('.sidenav').sidenav();
+});
+var tl2 = new TimelineMax();
+var element = document.getElementById('ArtBox');
+	if (element!=null) {
+
+	new ResizeSensor(element, function () {
+		if (element.clientHeight > 40) {
+			$('#artBeauty').addClass('animated fadeOutDown')
+			$('.abMobile').addClass('animated fadeOutUp')
+
+			tl2.to('#artBeauty, .abMobile', 1, {
+				ease: Power3.easeInOut,
+				margin: '0px',
+				height: '0px',
+				onComplete: function () {
+					$('#artBeauty, .abMobile').remove()
+				}
+			});
+		}
+	});
+
+	$(window).resize(function () {
+		if (window.innerWidth > 600 && $("#ArtBox").css('display') == "none") {
+			$('#titleID').css({ 'margin-bottom': '80px' })
+		}
+		if (window.innerWidth < 600) {
+			$('#titleID').css({
+				'margin-bottom': '0px'
+			})
+		}
+	});
+	}
+
+/* Click name to go back home */
+$('#clickme').on('click', function () {
+	if ($('#clickme').hasClass('goHome')) {
+		$('body').fadeOut(300, function () {
+			$('#clickme').removeClass('goHome')
+			location.reload();
+		})
+	}
+})
+
+
+
+window.addEventListener("orientationchange", function () {
+	if (lightbox.currentImageIndex != null) {
+		var i = lightbox.currentImageIndex;
+		lightbox.changeImage(i);
+	}
+}, false);
+
+
+function Cap(string) {
+	newString = "";
+	var arr = _.words(string);
+	_.each(arr, function (w) {
+		newString += _.capitalize(w) + " ";
+	})
+	return newString;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+	var elems = document.querySelectorAll('.dropdown-trigger');
+	var instances = M.Dropdown.init(elems);
+});
+
+$('#ArtBox').hide()
+$('#btnDIV').hide()
+$('#ddDivArt, #ddDivBeauty').hide()
+$('#emailHeader').hide();
+$('#makeupBtnGroup').hide();
+$('#artBtnGroup').hide();
+$('#loadingBox').css('opacity', 0)
+
+$('.btn-secondary').mouseout(function () {
+	$('.btn-secondary').removeClass('focus')
+})
+
+
+
+var animationEnd = (function (el) {
+	var animations = {
+		animation: 'animationend',
+		OAnimation: 'oAnimationEnd',
+		MozAnimation: 'mozAnimationEnd',
+		WebkitAnimation: 'webkitAnimationEnd',
+	};
+
+	for (var t in animations) {
+		if (el.style[t] !== undefined) {
+			return animations[t];
+		}
+	}
+})(document.createElement('div'));
+
+
+
+function rand() {
+	var t = Math.random().toString();
+	var s = t.replace(".", "");
+	return s;
+}
+
+
+
+
+$(function () {
+
+	$('#titleID').one(animationEnd, function () {
+
+		var artwork = [];
+		var beauty = [];
+
+		$.ajax({
+			type: "get",
+			url: "/mloftus/GetPics",
+			dataType: "json"
+		}).done(function (data) {
+			console.log(data)
+			_.each(data, function (img) {
+				if (_.toLower(img.Category) == "artwork") {
+					artwork.push(img)
+				}
+				else {
+					beauty.push(img)
+				}
+			})
+			let artData = _.template($('#photos').html());
+			$('#mainGrid').append(artData(artwork));
+
+			let beautyData = _.template($('#photos').html());
+			$('#beautyGrid').append(beautyData(beauty));
+
+			//var $grid = $('.grid').isotope({});
+
+
+			lightbox.option({
+				'resizeDuration': 500,
+				'imageFadeDuration': 600,
+				'fadeDuration': 600,
+				'positionFromTop': 50,
+				'showImageNumberLabel': false,
+				'wrapAround': true
+			})
+		});
+	})
+});
+
+
+$('#beautyNav').on('click', function () {
+	$('#mainGrid').hide()
+	$('#beautyGrid').show()
+
+	TweenLite.delayedCall(0.2, function () {
+			var $grid = $(".artGrid").imagesLoaded(function () {
+			$grid.isotope({
+				itemSelector: '.grid-item',
+				transitionDuration: '0.5s',
+				stagger: 60,
+
+				masonry: {
+					columnWidth: 245,
+					isFitWidth: true,
+					gutter: 20
+				}
+			})
+		});
+		$grid.isotope({ filter: '*' });
+		$('#makeupBtnGroup #allmakeup').click()
+	})
+});
+
+$('#artNav').on('click', function () {
+	$('#mainGrid').show()
+	$('#beautyGrid').hide()
+	
+	TweenLite.delayedCall(0.2, function () {
+		var $grid1 = $(".beautyGrid").imagesLoaded(function () {
+			$grid1.isotope({
+				itemSelector: '.grid-item',
+				transitionDuration: '0.5s',
+				stagger: 60,
+
+				masonry: {
+					columnWidth: 245,
+					isFitWidth: true,
+					gutter: 20
+				}
+			})
+		});
+		$grid1.isotope({ filter: '*' });
+		$('#artBtnGroup #all').click()
+	})
+});
+
+
+
+function loadPics(elem) {
+
+	var isArt = false;
+	var isBeauty = false;
+	var width = $('#loadingBox').width()
+	$('#loading').height(width)
+
+	if (elem == 'artID') {
+		isArt = true;
+		$('#beautyGrid').hide()
+	}
+	if (elem == 'beautyID') {
+		isBeauty = true;
+		$('#mainGrid').hide()
+	}
+
+	$('#loadingBox').animate({ opacity: 1 }, 500);
+	$('.selections').animate({ opacity: 0 }, 1000);
+	$('#test').css({ 'cursor': 'pointer' })
+	var tl = new TimelineMax();
+
+	TweenLite.delayedCall(0.5, function () {
+		$('#ArtBox').show()
+		$('#btnDIV').fadeIn(500)
+
+		if (isBeauty) {
+			$('#ddDivBeauty').fadeIn(500)
+			$('#makeupBtnGroup').show()
+		}
+		if (isArt) {
+			$('#ddDivArt').fadeIn(500)
+			$('#artBtnGroup').show()
+		}
+
+
+		var $grid = $(".artGrid").imagesLoaded(function () {
+			$grid.isotope({
+				itemSelector: '.grid-item',
+				transitionDuration: '0.5s',
+				stagger: 60,
+
+				masonry: {
+					columnWidth: 245,
+					isFitWidth: true,
+					gutter: 20
+				}
+			})
+		});
+		$grid.on('arrangeComplete',
+			function (event, laidOutItems) {
+				$('#clickme').addClass('goHome')
+				$('#mainGrid').animate({ opacity: 1 }, 200);
+				console.log('artgrid');
+			}
+		)
+		var $grid1 = $(".beautyGrid").imagesLoaded(function () {
+			$grid1.isotope({
+				itemSelector: '.grid-item',
+				transitionDuration: '0.5s',
+				stagger: 60,
+
+				masonry: {
+					columnWidth: 245,
+					isFitWidth: true,
+					gutter: 20
+				}
+			})
+		});
+		$grid1.on('arrangeComplete',
+			function (event, laidOutItems) {
+				$('#clickme').addClass('goHome')
+				$('#mainGrid').animate({ opacity: 1 }, 200);
+				console.log('beautygrid');
+			}
+		)
+	})
+
+
+
+
+	if (window.innerWidth > 600) {
+		tl.to("#titleID", 1, {
+			ease: Expo.easeOut,
+			margin: '0px auto 30px auto',
+			borderColor: "rgba(0,0,0,0)",
+			backgroundColor: 'rgba(0, 0, 0, 0)',
+			padding: '4px 65px 8px 20px'
+		}).to("#titleID", 1, {
+			ease: Power3.easeInOut,
+			backgroundColor: 'rgba(0, 0, 0, 0)',
+			width: '100%'
+		}, "-=0.9").to("#nav",2,{
+			ease: Expo.easeOut,
+			height:"50px"
+		}, "-=0.9")
+		tl.call(function () {
+			$('#titleID').addClass("smallTitle");
+
+		}, null, null, 2);
+
+		setTimeout(function () { $('#emailHeader').fadeIn(600) }, 2500)
+
+	}
+	if (window.innerWidth < 600) {
+		tl.to("#titleID", 1, {
+			ease: Expo.easeOut,
+			margin: '0px auto 0px auto',
+			borderColor: "rgba(0,0,0,0)",
+			padding: '0px 0px 0px 0px',
+			textAlign: 'center'
+		}).to("#titleID", 1, {
+			ease: Power3.easeInOut,
+			width: '100%'
+		}, "-=0.9").to("#nav",2,{
+			ease: Expo.easeOut,
+			height:"50px"
+		}, "-=0.9")
+		setTimeout(function () {
+			$('#emailHeader').fadeIn(600)
+		}, 2500)
+	}
+};
+
+
+
+
+
+$(window).resize(function () {
+	var width = $('#loadingBox').width()
+	$('#loading').height(width)
+})
+
+$('.filterButtons').change(function () {
+	var $grid = $('.grid').isotope({});
+	var filterValue = $(this).attr('data-filter');
+	$grid.isotope({ filter: filterValue });
+})
+
+$('li a.filterButtons').click(function () {
+	var $grid = $('.grid').isotope({});
+	var filterValue = $(this).attr('data-filter');
+	$grid.isotope({ filter: filterValue });
+})
+
+$('li a.filterButtons').click(function () {
+	$('.catButton').text(this.innerText)
+})
+
+</script>
